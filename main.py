@@ -110,4 +110,4 @@ def auto_opentab_delay():
 
 auto_opentab_delay()
 demo.title = "ChatGPT 学术优化"
-demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", share=FALSE, server_port=PORT, auth=AUTHENTICATION)
+demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", share=False, server_port=PORT, auth=AUTHENTICATION)
