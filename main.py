@@ -8,7 +8,8 @@ try: from config_private import proxies, WEB_PORT, LLM_MODEL, CONCURRENT_COUNT, 
 except: from config import proxies, WEB_PORT, LLM_MODEL, CONCURRENT_COUNT, AUTHENTICATION
 
 # 如果WEB_PORT是-1, 则随机选取WEB端口
-PORT = find_free_port() if WEB_PORT <= 0 else WEB_PORT
+# PORT = find_free_port() if WEB_PORT <= 0 else WEB_PORT
+PORT = 7861
 AUTHENTICATION = None if AUTHENTICATION == [] else AUTHENTICATION
 
 initial_prompt = "Serve me as a writing and programming assistant."
@@ -109,4 +110,4 @@ def auto_opentab_delay():
 
 auto_opentab_delay()
 demo.title = "ChatGPT 学术优化"
-demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", share=True, server_port=PORT, auth=AUTHENTICATION)
+demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", share=FALSE, server_port=PORT, auth=AUTHENTICATION)
