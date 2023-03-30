@@ -19,8 +19,12 @@ https://github.com/polarwinkel/mdtex2html
 ```
 
 > **Note**
-> 请注意只有“红颜色”标识的函数插件（按钮）才支持读取文件。目前暂不能完善地支持pdf格式文献的翻译解读，尚不支持word格式文件的读取。
-
+>
+> 1.请注意只有“红颜色”标识的函数插件（按钮）才支持读取文件。目前暂不能完善地支持pdf格式文献的翻译解读，尚不支持word格式文件的读取。
+>
+> 2.本项目中每个文件的功能都在`project_self_analysis.md`详细说明。随着版本的迭代，您也可以随时自行点击相关函数插件，调用GPT重新生成项目的自我解析报告。
+> 
+> 3.如果您不太习惯部分中文命名的函数，您可以随时点击相关函数插件，调用GPT一键生成纯英文的项目源代码。
 
 <div align="center">
     
@@ -40,6 +44,7 @@ chat分析报告生成 | [实验性功能] 运行后自动生成总结汇报
 公式显示 | 可以同时显示公式的tex形式和渲染形式
 图片显示 | 可以在markdown中显示图片
 支持GPT输出的markdown表格 | 可以输出支持GPT的markdown表格
+…… | ……
 
 </div>
 
@@ -130,6 +135,9 @@ python main.py
 - 测试实验功能模板函数（要求gpt回答历史上的今天发生了什么），您可以根据此函数为模板，实现更复杂的功能
     点击 "[实验] 实验功能函数模板"
 ```
+
+与代理网络有关的issue（网络超时、代理不起作用）汇总到 https://github.com/binary-husky/chatgpt_academic/issues/1
+
 ## 使用docker (Linux)
 
 ``` sh
@@ -157,6 +165,21 @@ input区域 输入 ./crazy_functions/test_project/latex/attention ， 然后点�
 input区域 输入 ./crazy_functions/test_project/python/dqn ， 然后点击 "[实验] 解析整个py项目（input输入项目根路径）"
 
 ```
+
+## 使用WSL2（Windows Subsystem for Linux 子系统）
+选择这种方式默认您已经具备一定基本知识，因此不再赘述多余步骤。如果不是这样，您可以从[这里](https://learn.microsoft.com/zh-cn/windows/wsl/about)或GPT处获取更多关于子系统的信息。
+
+WSL2可以配置使用Windows侧的代理上网，前置步骤可以参考[这里](https://www.cnblogs.com/tuilk/p/16287472.html)
+由于Windows相对WSL2的IP会发生变化，我们需要每次启动前先获取这个IP来保证顺利访问，将config.py中设置proxies的部分更改为如下代码：
+```python
+import subprocess
+cmd_get_ip = 'grep -oP  "(\d+\.)+(\d+)" /etc/resolv.conf'
+ip_proxy = subprocess.run(
+        cmd_get_ip, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True, shell=True
+        ).stdout.strip() # 获取windows的IP
+proxies = { "http": ip_proxy + ":51837", "https": ip_proxy + ":51837", } # 请自行修改
+```
+在启动main.py后，可以在windows浏览器中访问服务。至此测试、使用与上面其他方法无异。 
 
 
 ## 自定义新的便捷按钮（学术快捷键自定义）
@@ -197,10 +220,11 @@ python check_proxy.py
 ## 兼容性测试
 
 ### 图片显示：
+
 <div align="center">
-<img src="https://user-images.githubusercontent.com/96192199/226906087-b5f1c127-2060-4db9-af05-487643b21ed9.png" height="200" >
-<img src="https://user-images.githubusercontent.com/96192199/226906703-7226495d-6a1f-4a53-9728-ce6778cbdd19.png" height="200" >
+<img src="https://user-images.githubusercontent.com/96192199/228737599-bf0a9d9c-1808-4f43-ae15-dfcc7af0f295.png" width="800" >
 </div>
+
 
 ### 如果一个程序能够读懂并剖析自己：
 
