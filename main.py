@@ -43,12 +43,12 @@ with gr.Blocks(theme=set_theme, analytics_enabled=False, css=advanced_css) as ac
     gr.Markdown("### 科研专用ChatGPT，学术优化助力科研效率的提升")
     with gr.Row().style(equal_height=True):
         with gr.Column(scale=2):
-            chatbot = gr.Chatbot()
+            chatbot = gr.Chatbot(elem_id="academic_chatbot")
             chatbot.style(height=CHATBOT_HEIGHT)
             history = gr.State([])
         with gr.Column(scale=1):
             with gr.Row():
-                txt = gr.Textbox(show_label=False, placeholder="Input question here.").style(container=False)
+                txt = gr.Textbox(show_label=False, placeholder="在这里输入，按Shift+Enter发送", lines = 2).style(container=False)
             with gr.Row():
                 submitBtn = gr.Button("提交", variant="primary")
             with gr.Row():
