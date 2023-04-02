@@ -1,5 +1,9 @@
+import os
+
 # [step 1]>> 例如： API_KEY = "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" （此key无效）
-API_KEY = "sk-此处填API密钥"
+API_KEY = os.environ.get('OPENAI_API_KEY')
+http_proxy = os.environ.get("HTTP_PROXY") or os.environ.get("http_proxy")
+https_proxy = os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy")
 
 # [step 2]>> 改为True应用代理，如果直接在海外服务器部署，此处不修改
 USE_PROXY = True
@@ -13,8 +17,8 @@ if USE_PROXY:
     # 代理网络的地址，打开你的科学上网软件查看代理的协议(socks5/http)、地址(localhost)和端口(11284)
     proxies = { 
         #          [协议]://  [地址]  :[端口]
-        "http":  "http://127.0.0.1:4780", 
-        "https": "http://127.0.0.1:4780", 
+        "http":  str(http_proxy), 
+        "https": str(https_proxy), 
     }
 else:
     proxies = None

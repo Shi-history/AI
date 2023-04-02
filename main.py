@@ -38,8 +38,9 @@ from theme import adjust_theme, advanced_css
 set_theme = adjust_theme()
 
 cancel_handles = []
-with gr.Blocks(theme=set_theme, analytics_enabled=False, css=advanced_css) as demo:
-    gr.HTML(title_html)
+with gr.Blocks(theme=set_theme, analytics_enabled=False, css=advanced_css) as academic:
+    # gr.HTML(title_html)
+    gr.Markdown("### 科研专用ChatGPT，学术优化助力科研效率的提升")
     with gr.Row().style(equal_height=True):
         with gr.Column(scale=2):
             chatbot = gr.Chatbot()
@@ -140,6 +141,6 @@ def auto_opentab_delay():
         webbrowser.open_new_tab(f"http://localhost:{PORT}")
     threading.Thread(target=open, name="open-browser", daemon=True).start()
 
-auto_opentab_delay()
-demo.title = "ChatGPT 学术优化"
-demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", share=False, server_port=PORT, auth=AUTHENTICATION)
+#auto_opentab_delay()
+#demo.title = "ChatGPT 学术优化"
+#demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", share=False, server_port=PORT, auth=AUTHENTICATION)
