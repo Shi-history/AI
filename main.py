@@ -1,7 +1,7 @@
 import os; os.environ['no_proxy'] = '*' # 避免代理网络产生意外污染
 import gradio as gr
-from predict import predict
-from toolbox import format_io, find_free_port, on_file_uploaded, on_report_generated, get_conf
+from .predict import predict
+from .toolbox import format_io, find_free_port, on_file_uploaded, on_report_generated, get_conf
 
 # 建议您复制一个config_private.py放自己的秘密, 如API和代理网址, 避免不小心传github被别人看到
 proxies, WEB_PORT, LLM_MODEL, CONCURRENT_COUNT, AUTHENTICATION, CHATBOT_HEIGHT = \
@@ -41,7 +41,7 @@ set_theme = adjust_theme()
 cancel_handles = []
 with gr.Blocks(theme=set_theme, analytics_enabled=False, css=advanced_css) as academic:
     # gr.HTML(title_html)
-    gr.Markdown("### 科研专用ChatGPT，学术优化助力科研效率的提升")
+    gr.Markdown("### 科研专用GPT，学术优化助力科研效率的提升")
     with gr.Row().style(equal_height=True):
         with gr.Column(scale=2):
             chatbot = gr.Chatbot(elem_id="academic_chatbot")

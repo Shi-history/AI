@@ -1,3 +1,5 @@
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import markdown, mdtex2html, threading, importlib, traceback, importlib, inspect, re
 from show_math import convert as convert_math
 from functools import wraps, lru_cache
@@ -310,6 +312,7 @@ def on_report_generated(files, chatbot):
 
 @lru_cache(maxsize=128)
 def read_single_conf_with_lru_cache(arg):
+    sys.path.append(os.path.dirname(os.path.abspath(__file__)))
     try: r = getattr(importlib.import_module('config_private'), arg)
     except: r = getattr(importlib.import_module('config'), arg)
     # 在读取API_KEY时，检查一下是不是忘了改config

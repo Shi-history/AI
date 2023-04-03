@@ -11,6 +11,8 @@
     3. predict_no_ui_long_connection：在实验过程中发现调用predict_no_ui处理长文档时，和openai的连接容易断掉，这个函数用stream的方式解决这个问题，同样支持多线程
 """
 
+import sys, os
+sys.path.append(os.path.dirname(os.path.abspath(__file__)))
 import json
 import gradio as gr
 import logging
