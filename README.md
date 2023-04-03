@@ -46,9 +46,8 @@ arxiv小助手 | [函数插件] 输入arxiv文章url即可一键翻译摘要+下
 图片显示 | 可以在markdown中显示图片
 多线程函数插件支持 | 支持多线调用chatgpt，一键处理海量文本或程序
 支持GPT输出的markdown表格 | 可以输出支持GPT的markdown表格
-huggingface免科学上网在线体验 | 登陆huggingface后复制[此空间](https://huggingface.co/spaces/qingxu98/gpt-academic)
-
-
+启动暗色gradio[主题](https://github.com/binary-husky/chatgpt_academic/issues/173) | 在浏览器url后面添加```/?__dark-theme=true```可以切换dark主题
+huggingface免科学上网[在线体验](https://huggingface.co/spaces/qingxu98/gpt-academic) | 登陆huggingface后复制[此空间](https://huggingface.co/spaces/qingxu98/gpt-academic)
 …… | ……
 
 </div>
@@ -116,7 +115,7 @@ python -m pip install -r requirements.txt
 # （选择二.2）conda activate gptac_venv
 # （选择二.3）python -m pip install -r requirements.txt
 
-# 备注：使用官方pip源或者阿里pip源，其他pip源（如清华pip）有可能出问题，临时换源方法： 
+# 备注：使用官方pip源或者阿里pip源，其他pip源（如一些大学的pip）有可能出问题，临时换源方法： 
 # python -m pip install -r requirements.txt -i https://mirrors.aliyun.com/pypi/simple/
 ```
 
