@@ -15,7 +15,7 @@ if USE_PROXY:
     # [端口] 在代理软件的设置里找。虽然不同的代理软件界面不一样，但端口号都应该在最显眼的位置上
 
     # 代理网络的地址，打开你的科学上网软件查看代理的协议(socks5/http)、地址(localhost)和端口(11284)
-    proxies = { 
+    proxies = {
         #          [协议]://  [地址]  :[端口]
         "http":  str(http_proxy), 
         "https": str(https_proxy), 
@@ -27,6 +27,9 @@ else:
 # [step 3]>> 以下配置可以优化体验，但大部分场合下并不需要修改
 # 对话窗的高度
 CHATBOT_HEIGHT = 1115
+
+# 窗口布局
+LAYOUT = "LEFT-RIGHT"  # "LEFT-RIGHT"（左右布局） # "TOP-DOWN"（上下布局）
 
 # 发送请求到OpenAI后，等待多久判定为超时
 TIMEOUT_SECONDS = 25
@@ -47,4 +50,5 @@ API_URL = "https://api.openai.com/v1/chat/completions"
 CONCURRENT_COUNT = 100
 
 # 设置用户名和密码（相关功能不稳定，与gradio版本和网络都相关，如果本地使用不建议加这个）
-AUTHENTICATION = [] # [("username", "password"), ("username2", "password2"), ...]
+# [("username", "password"), ("username2", "password2"), ...]
+AUTHENTICATION = []
