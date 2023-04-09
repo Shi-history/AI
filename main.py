@@ -12,8 +12,9 @@ proxies, WEB_PORT, LLM_MODEL, CONCURRENT_COUNT, AUTHENTICATION, CHATBOT_HEIGHT, 
 PORT = 7861
 if not AUTHENTICATION: AUTHENTICATION = None
 
+from check_proxy import get_current_version
 initial_prompt = "Serve me as a writing and programming assistant."
-title_html = "<h1 align=\"center\">ChatGPT 学术优化</h1>"
+title_html = f"<h1 align=\"center\">ChatGPT 学术优化 {get_current_version()}</h1>"
 description =  """代码开源和更新[地址🚀](https://github.com/binary-husky/chatgpt_academic)，感谢热情的[开发者们❤️](https://github.com/binary-husky/chatgpt_academic/graphs/contributors)"""
 
 # 问询记录, python 版本建议3.9+（越新越好）
@@ -52,7 +53,6 @@ if LAYOUT == "TOP-DOWN":
 cancel_handles = []
 with gr.Blocks(theme=set_theme, analytics_enabled=False, css=advanced_css) as academic:
     gr.Markdown("### 科研专用GPT，学术优化助力科研效率的提升")
-    #gr.HTML(title_html)
     with gr_L1():
         with gr_L2(scale=2):
             chatbot = gr.Chatbot(elem_id="academic_chatbot")
@@ -162,15 +162,13 @@ with gr.Blocks(theme=set_theme, analytics_enabled=False, css=advanced_css) as ac
 def auto_opentab_delay():
     import threading, webbrowser, time
     print(f"如果浏览器没有自动打开，请复制并转到以下URL：")
-    print(f"\t（亮色主体）: http://localhost:{PORT}")
-    print(f"\t（暗色主体）: http://localhost:{PORT}/?__dark-theme=true")
+    print(f"\t（亮色主题）: http://localhost:{PORT}")
+    print(f"\t（暗色主题）: http://localhost:{PORT}/?__dark-theme=true")
     def open(): 
-        time.sleep(2)
-        try: auto_update()  # 检查新版本
-        except: pass
+        time.sleep(2)       # 打开浏览器
         webbrowser.open_new_tab(f"http://localhost:{PORT}/?__dark-theme=true")
     threading.Thread(target=open, name="open-browser", daemon=True).start()
+    threading.Thread(target=auto_update, name="self-upgrade", daemon=True).start()
 
 #auto_opentab_delay()
-#demo.title = "ChatGPT 学术优化"
-#demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", share=False, server_port=PORT, auth=AUTHENTICATION)
+#demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", share=True, server_port=PORT, auth=AUTHENTICATION)
