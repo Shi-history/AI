@@ -62,7 +62,7 @@ with gr.Blocks(theme=set_theme, analytics_enabled=False, css=advanced_css) as ac
         with gr_L2(scale=1):
             with gr.Accordion("输入区", open=True) as area_input_primary:
                 with gr.Row():
-                    txt = gr.Textbox(show_label=False, placeholder="在这里输入，按Shift+Enter发送").style(container=False)
+                    txt = gr.Textbox(show_label=False, placeholder="在这里输入，按Shift+Enter发送", lines=2).style(container=False)
                 with gr.Row():
                     submitBtn = gr.Button("提交", variant="primary")
                 with gr.Row():
