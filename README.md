@@ -2,7 +2,7 @@
 
 **如果喜欢这个项目，请给它一个Star；如果你发明了更好用的快捷键或函数插件，欢迎发issue或者pull requests**
 
-If you like this project, please give it a Star. If you've come up with more useful academic shortcuts or functional plugins, feel free to open an issue or pull request.
+If you like this project, please give it a Star. If you've come up with more useful academic shortcuts or functional plugins, feel free to open an issue or pull request. We also have a [README in English](img/README_EN.md) translated by this project itself.
 
 > **Note**
 >
@@ -10,8 +10,6 @@ If you like this project, please give it a Star. If you've come up with more use
 >
 > 2.本项目中每个文件的功能都在自译解[`self_analysis.md`](https://github.com/binary-husky/chatgpt_academic/wiki/chatgpt-academic%E9%A1%B9%E7%9B%AE%E8%87%AA%E8%AF%91%E8%A7%A3%E6%8A%A5%E5%91%8A)详细说明。随着版本的迭代，您也可以随时自行点击相关函数插件，调用GPT重新生成项目的自我解析报告。常见问题汇总在[`wiki`](https://github.com/binary-husky/chatgpt_academic/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)当中。
 > 
-> 3.如果您不太习惯部分中文命名的函数、注释或者界面，您可以随时点击相关函数插件，调用ChatGPT一键生成纯英文的项目源代码。另见由本项目Markdown翻译插件一键生成的[README in English](img/README_EN.md). 
->
 
 
 <div align="center">
@@ -43,36 +41,27 @@ huggingface免科学上网[在线体验](https://huggingface.co/spaces/qingxu98/
 
 </div>
 
-<!-- - 新界面（左：master主分支, 右：dev开发前沿） -->
+
 - 新界面（修改config.py中的LAYOUT选项即可实现“左右布局”和“上下布局”的切换）
 <div align="center">
 <img src="https://user-images.githubusercontent.com/96192199/230361456-61078362-a966-4eb5-b49e-3c62ef18b860.gif" width="700" >
 </div>
 
 
-
 - 所有按钮都通过读取functional.py动态生成，可随意加自定义功能，解放粘贴板
 <div align="center">
-<img src="img/公式.gif" width="700" >
+<img src="https://user-images.githubusercontent.com/96192199/231975334-b4788e91-4887-412f-8b43-2b9c5f41d248.gif" width="700" >
 </div>
 
 - 润色/纠错
 <div align="center">
-<img src="img/润色.gif" width="700" >
-</div>
-
-
-- 支持GPT输出的markdown表格
-<div align="center">
-<img src="img/demo2.jpg" width="500" >
+<img src="https://user-images.githubusercontent.com/96192199/231980294-f374bdcb-3309-4560-b424-38ef39f04ebd.gif" width="700" >
 </div>
 
 - 如果输出包含公式，会同时以tex形式和渲染形式显示，方便复制和阅读
 <div align="center">
 <img src="https://user-images.githubusercontent.com/96192199/230598842-1d7fcddd-815d-40ee-af60-baf488a199df.png" width="700" >
 </div>
-
-
 
 - 懒得看项目代码？整个工程直接给chatgpt炫嘴里
 <div align="center">

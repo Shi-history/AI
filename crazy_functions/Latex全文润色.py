@@ -14,7 +14,7 @@ class PaperFileGroup():
         import tiktoken
         from toolbox import get_conf
         enc = tiktoken.encoding_for_model(*get_conf('LLM_MODEL'))
-        def get_token_num(txt): return len(enc.encode(txt))
+        def get_token_num(txt): return len(enc.encode(txt, disallowed_special=()))
         self.get_token_num = get_token_num
 
     def run_file_split(self, max_token_limit=1900):
@@ -92,7 +92,7 @@ def 多文件润色(file_manifest, project_folder, llm_kwargs, plugin_kwargs, ch
         chatbot=chatbot,
         history_array=[[""] for _ in range(n_split)],
         sys_prompt_array=sys_prompt_array,
-        max_workers=10,  # OpenAI所允许的最大并行过载
+        # max_workers=5,  # 并行任务数量限制，最多同时执行5个，其他的排队等待
         scroller_max_len = 80
     )
 

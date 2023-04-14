@@ -70,7 +70,7 @@ def 解析PDF(file_manifest, project_folder, llm_kwargs, plugin_kwargs, chatbot,
         from .crazy_utils import breakdown_txt_to_satisfy_token_limit_for_pdf
         from toolbox import get_conf
         enc = tiktoken.encoding_for_model(*get_conf('LLM_MODEL'))
-        def get_token_num(txt): return len(enc.encode(txt))
+        def get_token_num(txt): return len(enc.encode(txt, disallowed_special=()))
         paper_fragments = breakdown_txt_to_satisfy_token_limit_for_pdf(
             txt=file_content,  get_token_fn=get_token_num, limit=TOKEN_LIMIT_PER_FRAGMENT)
         page_one_fragments = breakdown_txt_to_satisfy_token_limit_for_pdf(
@@ -98,7 +98,7 @@ def 解析PDF(file_manifest, project_folder, llm_kwargs, plugin_kwargs, chatbot,
             history_array=[[paper_meta] for _ in paper_fragments],
             sys_prompt_array=[
                 "请你作为一个学术翻译，负责把学术论文的片段准确翻译成中文。" for _ in paper_fragments],
-            max_workers=16  # OpenAI所允许的最大并行过载
+            # max_workers=5  # OpenAI所允许的最大并行过载
         )
 
         # 整理报告的格式

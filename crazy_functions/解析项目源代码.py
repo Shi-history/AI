@@ -11,9 +11,10 @@ def 解析源代码新(file_manifest, project_folder, llm_kwargs, plugin_kwargs,
     history_array = []
     sys_prompt_array = []
     report_part_1 = []
-
+    assert len(file_manifest) <= 1024, "源文件太多（超过1024个）, 请缩减输入文件的数量。或者，您也可以选择删除此行警告，并修改代码拆分file_manifest列表，从而实现分批次处理。"
     ############################## <第一步，逐个文件分析，多线程> ##################################
     for index, fp in enumerate(file_manifest):
+        # 读取文件
         with open(fp, 'r', encoding='utf-8', errors='replace') as f:
             file_content = f.read()
         prefix = "接下来请你逐文件分析下面的工程" if index==0 else ""
@@ -25,6 +26,7 @@ def 解析源代码新(file_manifest, project_folder, llm_kwargs, plugin_kwargs,
         history_array.append([])
         sys_prompt_array.append("你是一个程序架构分析师，正在分析一个源代码项目。你的回答必须简单明了。")
 
+    # 文件读取完成，对每一个源代码文件，生成一个请求线程，发送到chatgpt进行分析
     gpt_response_collection = yield from request_gpt_model_multi_threads_with_very_awesome_ui_and_high_efficiency(
         inputs_array = inputs_array,
         inputs_show_user_array = inputs_show_user_array,
@@ -35,28 +37,13 @@ def 解析源代码新(file_manifest, project_folder, llm_kwargs, plugin_kwargs,
         show_user_at_complete = True
     )
 
+    # 全部文件解析完成，结果写入文件，准备对工程源代码进行汇总分析
     report_part_1 = copy.deepcopy(gpt_response_collection)
     history_to_return = report_part_1
     res = write_results_to_file(report_part_1)
     chatbot.append(("完成？", "逐个文件分析已完成。" + res + "\n\n正在开始汇总。"))
     yield from update_ui(chatbot=chatbot, history=history_to_return) # 刷新界面
 
-    ############################## <存储中间数据进行调试> ##################################
-        
-    # def objdump(obj):
-    #     import pickle
-    #     with open('objdump.tmp', 'wb+') as f:
-    #         pickle.dump(obj, f)
-    #     return
-
-    # def objload():
-    #     import pickle, os
-    #     if not os.path.exists('objdump.tmp'): 
-    #         return
-    #     with open('objdump.tmp', 'rb') as f:
-    #         return pickle.load(f)
-    # objdump([report_part_1, gpt_response_collection, history_to_return, file_manifest, project_folder, fp, llm_kwargs, chatbot])
-    
     ############################## <第二步，综合，单线程，分组+迭代处理> ##################################
     batchsize = 16  # 10个文件为一组
     report_part_2 = []
