@@ -188,6 +188,7 @@ def main():
 
     #auto_opentab_delay()
     #demo.queue(concurrency_count=CONCURRENT_COUNT).launch(server_name="0.0.0.0", server_port=PORT, auth=AUTHENTICATION, favicon_path="docs/logo.png")
+    return academic
 
 if __name__ == "__main__":
     main()
