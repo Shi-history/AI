@@ -92,8 +92,9 @@ def CatchException(f):
             from toolbox import get_conf
             proxies, = get_conf('proxies')
             tb_str = '```\n' + trimmed_format_exc() + '```'
-            if chatbot is None or len(chatbot) == 0:
-                chatbot = [["插件调度异常", "异常原因"]]
+            if len(chatbot) == 0:
+                chatbot.clear()
+                chatbot.append(["插件调度异常", "异常原因"])
             chatbot[-1] = (chatbot[-1][0],
                            f"[Local Message] 实验性函数调用出错: \n\n{tb_str} \n\n当前代理可用性: \n\n{check_proxy(proxies)}")
             yield from update_ui(chatbot=chatbot, history=history, msg=f'异常 {e}') # 刷新界面
@@ -218,13 +219,17 @@ def text_divide_paragraph(text):
         text = "</br>".join(lines)
         return text
 
-
+@lru_cache(maxsize=128) # 使用 lru缓存 加快转换速度
 def markdown_convertion(txt):
     """
     将Markdown格式的文本转换为HTML格式。如果包含数学公式，则先将公式转换为HTML格式。
     """
     pre = '<div class="markdown-body">'
     suf = '</div>'
+    if txt.startswith(pre) and txt.endswith(suf):
+        # print('警告，输入了已经经过转化的字符串，二次转化可能出问题')
+        return txt # 已经被转化过，不需要再次转化
+    
     markdown_extension_configs = {
         'mdx_math': {
             'enable_dollar_delimiter': True,
@@ -268,8 +273,14 @@ def markdown_convertion(txt):
         content = content.replace('</script>\n</script>', '</script>')
         return content
 
+    def no_code(txt):
+        if '```' not in txt: 
+            return True
+        else:
+            if '```reference' in txt: return True    # newbing
+            else: return False
 
-    if ('$' in txt) and ('```' not in txt):  # 有$标识的公式符号，且没有代码段```的标识
+    if ('$' in txt) and no_code(txt):  # 有$标识的公式符号，且没有代码段```的标识
         # convert everything to html format
         split = markdown.markdown(text='---')
         convert_stage_1 = markdown.markdown(text=txt, extensions=['mdx_math', 'fenced_code', 'tables', 'sane_lists'], extension_configs=markdown_extension_configs)
@@ -456,8 +467,9 @@ def on_report_generated(files, chatbot):
     return report_files, chatbot
 
 def is_openai_api_key(key):
-    API_MATCH = re.match(r"sk-[a-zA-Z0-9]{48}$", key)
-    return bool(API_MATCH)
+    API_MATCH_ORIGINAL = re.match(r"sk-[a-zA-Z0-9]{48}$", key)
+    API_MATCH_AZURE = re.match(r"[a-zA-Z0-9]{32}$", key)
+    return bool(API_MATCH_ORIGINAL) or bool(API_MATCH_AZURE)
 
 def is_api2d_key(key):
     if key.startswith('fk') and len(key) == 41:
