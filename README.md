@@ -44,7 +44,7 @@ chat分析报告生成 | [函数插件] 运行后自动生成总结汇报
 启动暗色gradio[主题](https://github.com/binary-husky/chatgpt_academic/issues/173) | 在浏览器url后面添加```/?__theme=dark```可以切换dark主题
 [多LLM模型](https://www.bilibili.com/video/BV1wT411p7yf)支持，[API2D](https://api2d.com/)接口支持 | 同时被GPT3.5、GPT4、[清华ChatGLM](https://github.com/THUDM/ChatGLM-6B)、[复旦MOSS](https://github.com/OpenLMLab/MOSS)同时伺候的感觉一定会很不错吧？
 更多LLM模型接入，支持[huggingface部署](https://huggingface.co/spaces/qingxu98/gpt-academic) | 加入Newbing接口(新必应)，引入清华[Jittorllms](https://github.com/Jittor/JittorLLMs)支持[LLaMA](https://github.com/facebookresearch/llama)，[RWKV](https://github.com/BlinkDL/ChatRWKV)和[盘古α](https://openi.org.cn/pangu/)
-…… | ……
+更多新功能展示(图像生成等) …… | 见本文档结尾处 ……
 
 </div>
 
@@ -150,8 +150,10 @@ cd chatgpt_academic                                 # 进入路径
 nano config.py                                      # 用任意文本编辑器编辑config.py, 配置 “Proxy”， “API_KEY” 以及 “WEB_PORT” (例如50923) 等
 docker build -t gpt-academic .                      # 安装
 
-docker run --rm -it --net=host gpt-academic         #（最后一步-选择1）在Linux环境下，用`--net=host`更方便快捷
-docker run --rm -it -p 50923:50923 gpt-academic     #（最后一步-选择2）在macOS/windows环境下，只能用-p选项将容器上的端口(例如50923)暴露给主机上的端口
+#（最后一步-选择1）在Linux环境下，用`--net=host`更方便快捷
+docker run --rm -it --net=host gpt-academic
+#（最后一步-选择2）在macOS/windows环境下，只能用-p选项将容器上的端口(例如50923)暴露给主机上的端口
+docker run --rm -it -e WEB_PORT=50923 -p 50923:50923 gpt-academic
 ```
 
 2. ChatGPT + ChatGLM + MOSS（需要熟悉Docker）
@@ -258,6 +260,11 @@ Tip：不指定文件直接点击 `载入对话历史存档` 可以查看历史h
 7. 新增MOSS大语言模型支持
 <div align="center">
 <img src="https://user-images.githubusercontent.com/96192199/236639178-92836f37-13af-4fdd-984d-b4450fe30336.png" width="500" >
+</div>
+
+8. OpenAI图像生成
+<div align="center">
+<img src="https://github.com/binary-husky/gpt_academic/assets/96192199/bc7ab234-ad90-48a0-8d62-f703d9e74665" width="500" >
 </div>
 
 
