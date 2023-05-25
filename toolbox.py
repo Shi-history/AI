@@ -730,6 +730,7 @@ def clip_history(inputs, history, tokenizer, max_token_limit):
 第三部分
 其他小工具:
     - zip_folder:    把某个路径下所有文件压缩，然后转移到指定的另一个路径中（gpt写的）
+    - gen_time_str:  生成时间戳
 ========================================================================
 """
 
@@ -764,3 +765,25 @@ def zip_folder(source_folder, dest_folder, zip_name):
 
     print(f"Zip file created at {zip_file}")
 
+def gen_time_str():
+    import time
+    return time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
+
+
+class ProxyNetworkActivate():
+    """
+    这段代码定义了一个名为TempProxy的空上下文管理器, 用于给一小段代码上代理
+    """
+    def __enter__(self):
+        from toolbox import get_conf
+        proxies, = get_conf('proxies')
+        if 'no_proxy' in os.environ: os.environ.pop('no_proxy')
+        os.environ['HTTP_PROXY'] = proxies['http']
+        os.environ['HTTPS_PROXY'] = proxies['https']
+        return self
+
+    def __exit__(self, exc_type, exc_value, traceback):
+        os.environ['no_proxy'] = '*'
+        if 'HTTP_PROXY' in os.environ: os.environ.pop('HTTP_PROXY')
+        if 'HTTPS_PROXY' in os.environ: os.environ.pop('HTTPS_PROXY')
+        return

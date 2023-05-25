@@ -269,5 +269,31 @@ def get_crazy_functions():
             "Function": HotReload(总结音视频)
         }
     })
+    try:
+        from crazy_functions.数学动画生成manim import 动画生成
+        function_plugins.update({
+            "数学动画生成（Manim）": {
+                "Color": "stop",
+                "AsButton": False,
+                "Function": HotReload(动画生成)
+            }
+        })
+    except:
+        print('Load function plugin failed')
+
+    try:
+        from crazy_functions.批量Markdown翻译 import Markdown翻译指定语言
+        function_plugins.update({
+            "Markdown翻译（手动指定语言）": {
+                "Color": "stop",
+                "AsButton": False,
+                "AdvancedArgs": True,
+                "ArgsReminder": "请输入要翻译成哪种语言，默认为Chinese。",
+                "Function": HotReload(Markdown翻译指定语言)
+            }
+        })
+    except:
+        print('Load function plugin failed')
+
     ###################### 第n组插件 ###########################
     return function_plugins
