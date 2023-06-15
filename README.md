@@ -47,7 +47,7 @@ chat分析报告生成 | [函数插件] 运行后自动生成总结汇报
 公式/图片/表格显示 | 可以同时显示公式的[tex形式和渲染形式](https://user-images.githubusercontent.com/96192199/230598842-1d7fcddd-815d-40ee-af60-baf488a199df.png)，支持公式、代码高亮
 多线程函数插件支持 | 支持多线调用chatgpt，一键处理[海量文本](https://www.bilibili.com/video/BV1FT411H7c5/)或程序
 启动暗色gradio[主题](https://github.com/binary-husky/chatgpt_academic/issues/173) | 在浏览器url后面添加```/?__theme=dark```可以切换dark主题
-[多LLM模型](https://www.bilibili.com/video/BV1wT411p7yf)支持，[API2D](https://api2d.com/)接口支持 | 同时被GPT3.5、GPT4、[清华ChatGLM](https://github.com/THUDM/ChatGLM-6B)、[复旦MOSS](https://github.com/OpenLMLab/MOSS)同时伺候的感觉一定会很不错吧？
+[多LLM模型](https://www.bilibili.com/video/BV1wT411p7yf)支持 | 同时被GPT3.5、GPT4、[清华ChatGLM](https://github.com/THUDM/ChatGLM-6B)、[复旦MOSS](https://github.com/OpenLMLab/MOSS)同时伺候的感觉一定会很不错吧？
 更多LLM模型接入，支持[huggingface部署](https://huggingface.co/spaces/qingxu98/gpt-academic) | 加入Newbing接口(新必应)，引入清华[Jittorllms](https://github.com/Jittor/JittorLLMs)支持[LLaMA](https://github.com/facebookresearch/llama)，[RWKV](https://github.com/BlinkDL/ChatRWKV)和[盘古α](https://openi.org.cn/pangu/)
 更多新功能展示(图像生成等) …… | 见本文档结尾处 ……
 
@@ -228,7 +228,7 @@ docker-compose up
 
 1. 对话保存功能。在函数插件区调用 `保存当前的对话` 即可将当前对话保存为可读+可复原的html文件，
 另外在函数插件区（下拉菜单）调用 `载入对话历史存档` ，即可还原之前的会话。
-Tip：不指定文件直接点击 `载入对话历史存档` 可以查看历史html存档缓存，点击 `删除所有本地对话历史记录` 可以删除所有html存档缓存。
+Tip：不指定文件直接点击 `载入对话历史存档` 可以查看历史html存档缓存。
 <div align="center">
 <img src="https://user-images.githubusercontent.com/96192199/235222390-24a9acc0-680f-49f5-bc81-2f3161f1e049.png" width="500" >
 </div>
@@ -251,38 +251,33 @@ Tip：不指定文件直接点击 `载入对话历史存档` 可以查看历史h
 <img src="https://user-images.githubusercontent.com/96192199/227504931-19955f78-45cd-4d1c-adac-e71e50957915.png" height="400" >
 </div>
 
-5. 这是一个能够“自我译解”的开源项目
-<div align="center">
-<img src="https://user-images.githubusercontent.com/96192199/226936850-c77d7183-0749-4c1c-9875-fd4891842d0c.png" width="500" >
-</div>
-
-6. 译解其他开源项目，不在话下
+5. 译解其他开源项目
 <div align="center">
 <img src="https://user-images.githubusercontent.com/96192199/226935232-6b6a73ce-8900-4aee-93f9-733c7e6fef53.png" height="250" >
 <img src="https://user-images.githubusercontent.com/96192199/226969067-968a27c1-1b9c-486b-8b81-ab2de8d3f88a.png" height="250" >
 </div>
 
-7. 装饰[live2d](https://github.com/fghrsh/live2d_demo)的小功能（默认关闭，需要修改`config.py`）
+6. 装饰[live2d](https://github.com/fghrsh/live2d_demo)的小功能（默认关闭，需要修改`config.py`）
 <div align="center">
 <img src="https://user-images.githubusercontent.com/96192199/236432361-67739153-73e8-43fe-8111-b61296edabd9.png" width="500" >
 </div>
 
-8. 新增MOSS大语言模型支持
+7. 新增MOSS大语言模型支持
 <div align="center">
 <img src="https://user-images.githubusercontent.com/96192199/236639178-92836f37-13af-4fdd-984d-b4450fe30336.png" width="500" >
 </div>
 
-9. OpenAI图像生成
+8. OpenAI图像生成
 <div align="center">
 <img src="https://github.com/binary-husky/gpt_academic/assets/96192199/bc7ab234-ad90-48a0-8d62-f703d9e74665" width="500" >
 </div>
 
-10. OpenAI音频解析与总结
+9. OpenAI音频解析与总结
 <div align="center">
 <img src="https://github.com/binary-husky/gpt_academic/assets/96192199/709ccf95-3aee-498a-934a-e1c22d3d5d5b" width="500" >
 </div>
 
-11. Latex全文校对纠错
+10. Latex全文校对纠错
 <div align="center">
 <img src="https://github.com/binary-husky/gpt_academic/assets/96192199/651ccd98-02c9-4464-91e1-77a6b7d1b033" height="200" > ===>
 <img src="https://github.com/binary-husky/gpt_academic/assets/96192199/476f66d9-7716-4537-b5c1-735372c25adb" height="200">
@@ -310,30 +305,32 @@ gpt_academic开发者QQ群-2：610599535
 
 - 已知问题
     - 某些浏览器翻译插件干扰此软件前端的运行
-    - 官方Gradio目前有很多兼容性Bug，请务必使用requirement.txt安装Gradio
+    - 官方Gradio目前有很多兼容性Bug，请务必使用`requirement.txt`安装Gradio
 
 ## 参考与学习
 
 ```
-代码中参考了很多其他优秀项目中的设计，主要包括：
+代码中参考了很多其他优秀项目中的设计，顺序不分先后：
 
-# 项目1：清华ChatGLM-6B:
+# 清华ChatGLM-6B:
 https://github.com/THUDM/ChatGLM-6B
 
-# 项目2：清华JittorLLMs:
+# 清华JittorLLMs:
 https://github.com/Jittor/JittorLLMs
 
-# 项目3：Edge-GPT:
-https://github.com/acheong08/EdgeGPT
-
-# 项目4：ChuanhuChatGPT:
-https://github.com/GaiZhenbiao/ChuanhuChatGPT
-
-# 项目5：ChatPaper:
+# ChatPaper:
 https://github.com/kaixindelele/ChatPaper
 
-# 更多：
+# Edge-GPT:
+https://github.com/acheong08/EdgeGPT
+
+# ChuanhuChatGPT:
+https://github.com/GaiZhenbiao/ChuanhuChatGPT
+
+# Oobabooga one-click installer:
+https://github.com/oobabooga/one-click-installers
+
+# More：
 https://github.com/gradio-app/gradio
 https://github.com/fghrsh/live2d_demo
-https://github.com/oobabooga/one-click-installers
 ```
