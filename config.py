@@ -5,6 +5,7 @@ API_KEY = os.environ.get('OPENAI_API_KEY') # 可同时填写多个API-KEY，用�
 http_proxy = os.environ.get("HTTP_PROXY") or os.environ.get("http_proxy")
 https_proxy = os.environ.get("HTTPS_PROXY") or os.environ.get("https_proxy")
 
+
 # [step 2]>> 改为True应用代理，如果直接在海外服务器部署，此处不修改
 USE_PROXY = True
 if USE_PROXY:
@@ -85,3 +86,10 @@ your bing cookies here
 # 如果需要使用Slack Claude，使用教程详情见 request_llm/README.md
 SLACK_CLAUDE_BOT_ID = ''   
 SLACK_CLAUDE_USER_TOKEN = ''
+
+
+# 如果需要使用AZURE 详情请见额外文档 docs\use_azure.md
+AZURE_ENDPOINT = "https://你的api名称.openai.azure.com/"
+AZURE_API_KEY = "填入azure openai api的密钥"
+AZURE_API_VERSION = "填入api版本"
+AZURE_ENGINE = "填入ENGINE"
