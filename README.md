@@ -1,11 +1,11 @@
 > **Note**
 >
-> 2023.7.5: 对Gradio依赖进行了调整。请及时**更新代码**。安装依赖时，请严格选择`requirements.txt`中**指定的版本**：
+> 2023.7.8: Gradio, Pydantic依赖调整，已修改 `requirements.txt`。请及时**更新代码**，安装依赖时，请严格选择`requirements.txt`中**指定的版本**
 >
 > `pip install -r requirements.txt`
 
 
-# <div align=center><img src="docs/logo.png" width="40" > GPT 学术优化 (GPT Academic)</div>
+# <div align=center><img src="docs/logo.png" width="40"> GPT 学术优化 (GPT Academic)</div>
 
 **如果喜欢这个项目，请给它一个Star；如果您发明了好用的快捷键或函数插件，欢迎发pull requests！**
 
@@ -18,14 +18,14 @@ To translate this project to arbitary language with GPT, read and run [`multi_la
 >
 > 2.本项目中每个文件的功能都在自译解[`self_analysis.md`](https://github.com/binary-husky/gpt_academic/wiki/chatgpt-academic%E9%A1%B9%E7%9B%AE%E8%87%AA%E8%AF%91%E8%A7%A3%E6%8A%A5%E5%91%8A)详细说明。随着版本的迭代，您也可以随时自行点击相关函数插件，调用GPT重新生成项目的自我解析报告。常见问题汇总在[`wiki`](https://github.com/binary-husky/gpt_academic/wiki/%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98)当中。[安装方法](#installation)。
 > 
-> 3.本项目兼容并鼓励尝试国产大语言模型ChatGLM和Moss等等。支持多个api-key共存，可在配置文件中填写如`API_KEY="openai-key1,openai-key2,api2d-key3"`。需要临时更换`API_KEY`时，在输入区输入临时的`API_KEY`然后回车键提交后即可生效。
+> 3.本项目兼容并鼓励尝试国产大语言模型ChatGLM和Moss等等。支持多个api-key共存，可在配置文件中填写如`API_KEY="openai-key1,openai-key2,azure-key3,api2d-key4"`。需要临时更换`API_KEY`时，在输入区输入临时的`API_KEY`然后回车键提交后即可生效。
 
 
  
 
 <div align="center">
 
-功能 | 描述
+功能（⭐= 近期新增功能） | 描述
 --- | ---
 一键润色 | 支持一键润色、一键查找论文语法错误
 一键中英互译 | 一键中英互译
@@ -41,15 +41,18 @@ Markdown[中英互译](https://www.bilibili.com/video/BV1yo4y157jV/) | [函数�
 chat分析报告生成 | [函数插件] 运行后自动生成总结汇报
 [PDF论文全文翻译功能](https://www.bilibili.com/video/BV1KT411x7Wn) | [函数插件] PDF论文提取题目&摘要+翻译全文（多线程）
 [Arxiv小助手](https://www.bilibili.com/video/BV1LM4y1279X) | [函数插件] 输入arxiv文章url即可一键翻译摘要+下载PDF
+Latex论文一键校对 | [函数插件] 仿Grammarly对Latex文章进行语法、拼写纠错+输出对照PDF
 [谷歌学术统合小助手](https://www.bilibili.com/video/BV19L411U7ia) | [函数插件] 给定任意谷歌学术搜索页面URL，让gpt帮你[写relatedworks](https://www.bilibili.com/video/BV1GP411U7Az/)
 互联网信息聚合+GPT | [函数插件] 一键[让GPT从互联网获取信息](https://www.bilibili.com/video/BV1om4y127ck)回答问题，让信息永不过时
 ⭐Arxiv论文精细翻译 | [函数插件] 一键[以超高质量翻译arxiv论文](https://www.bilibili.com/video/BV1dz4y1v77A/)，目前最好的论文翻译工具
+⭐[实时语音对话输入](https://github.com/binary-husky/gpt_academic/blob/master/docs/use_audio.md) | [函数插件] 异步监听音频，完全脱手操作，自动断句，自动寻找回答时机
 公式/图片/表格显示 | 可以同时显示公式的[tex形式和渲染形式](https://user-images.githubusercontent.com/96192199/230598842-1d7fcddd-815d-40ee-af60-baf488a199df.png)，支持公式、代码高亮
 多线程函数插件支持 | 支持多线调用chatgpt，一键处理[海量文本](https://www.bilibili.com/video/BV1FT411H7c5/)或程序
 启动暗色[主题](https://github.com/binary-husky/gpt_academic/issues/173) | 在浏览器url后面添加```/?__theme=dark```可以切换dark主题
-[多LLM模型](https://www.bilibili.com/video/BV1wT411p7yf)支持 | 同时被GPT3.5、GPT4、[清华ChatGLM](https://github.com/THUDM/ChatGLM-6B)、[复旦MOSS](https://github.com/OpenLMLab/MOSS)同时伺候的感觉一定会很不错吧？
+[多LLM模型](https://www.bilibili.com/video/BV1wT411p7yf)支持 | 同时被GPT3.5、GPT4、[清华ChatGLM2](https://github.com/THUDM/ChatGLM2-6B)、[复旦MOSS](https://github.com/OpenLMLab/MOSS)同时伺候的感觉一定会很不错吧？
+⭐ChatGLM2微调模型 | 支持加载ChatGLM2微调模型，提供ChatGLM2微调辅助插件
 更多LLM模型接入，支持[huggingface部署](https://huggingface.co/spaces/qingxu98/gpt-academic) | 加入Newbing接口(新必应)，引入清华[Jittorllms](https://github.com/Jittor/JittorLLMs)支持[LLaMA](https://github.com/facebookresearch/llama)和[盘古α](https://openi.org.cn/pangu/)
-更多新功能展示(图像生成等) …… | 见本文档结尾处 ……
+更多新功能展示 (图像生成等) …… | 见本文档结尾处 ……
 
 </div>
 
@@ -113,12 +116,12 @@ python -m pip install -r requirements.txt # 这个步骤和pip安装一样的步
 ```
 
 
-<details><summary>如果需要支持清华ChatGLM/复旦MOSS作为后端，请点击展开此处</summary>
+<details><summary>如果需要支持清华ChatGLM2/复旦MOSS作为后端，请点击展开此处</summary>
 <p>
 
-【可选步骤】如果需要支持清华ChatGLM/复旦MOSS作为后端，需要额外安装更多依赖（前提条件：熟悉Python + 用过Pytorch + 电脑配置够强）：
+【可选步骤】如果需要支持清华ChatGLM2/复旦MOSS作为后端，需要额外安装更多依赖（前提条件：熟悉Python + 用过Pytorch + 电脑配置够强）：
 ```sh
-# 【可选步骤I】支持清华ChatGLM。清华ChatGLM备注：如果遇到"Call ChatGLM fail 不能正常加载ChatGLM的参数" 错误，参考如下： 1：以上默认安装的为torch+cpu版，使用cuda需要卸载torch重新安装torch+cuda； 2：如因本机配置不够无法加载模型，可以修改request_llm/bridge_chatglm.py中的模型精度, 将 AutoTokenizer.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True) 都修改为 AutoTokenizer.from_pretrained("THUDM/chatglm-6b-int4", trust_remote_code=True)
+# 【可选步骤I】支持清华ChatGLM2。清华ChatGLM备注：如果遇到"Call ChatGLM fail 不能正常加载ChatGLM的参数" 错误，参考如下： 1：以上默认安装的为torch+cpu版，使用cuda需要卸载torch重新安装torch+cuda； 2：如因本机配置不够无法加载模型，可以修改request_llm/bridge_chatglm.py中的模型精度, 将 AutoTokenizer.from_pretrained("THUDM/chatglm-6b", trust_remote_code=True) 都修改为 AutoTokenizer.from_pretrained("THUDM/chatglm-6b-int4", trust_remote_code=True)
 python -m pip install -r request_llm/requirements_chatglm.txt  
 
 # 【可选步骤II】支持复旦MOSS
@@ -142,6 +145,8 @@ python main.py
 ### 安装方法II：使用Docker
 
 1. 仅ChatGPT（推荐大多数人选择，等价于docker-compose方案1）
+[![basic](https://github.com/binary-husky/gpt_academic/actions/workflows/build-without-local-llms.yml/badge.svg?branch=master)](https://github.com/binary-husky/gpt_academic/actions/workflows/build-without-local-llms.yml)
+[![basiclatex](https://github.com/binary-husky/gpt_academic/actions/workflows/build-with-latex.yml/badge.svg?branch=master)](https://github.com/binary-husky/gpt_academic/actions/workflows/build-with-latex.yml)
 
 ``` sh
 git clone https://github.com/binary-husky/gpt_academic.git  # 下载项目
@@ -149,14 +154,15 @@ cd gpt_academic                                 # 进入路径
 nano config.py                                      # 用任意文本编辑器编辑config.py, 配置 “Proxy”， “API_KEY” 以及 “WEB_PORT” (例如50923) 等
 docker build -t gpt-academic .                      # 安装
 
-#（最后一步-选择1）在Linux环境下，用`--net=host`更方便快捷
+#（最后一步-Linux操作系统）用`--net=host`更方便快捷
 docker run --rm -it --net=host gpt-academic
-#（最后一步-选择2）在macOS/windows环境下，只能用-p选项将容器上的端口(例如50923)暴露给主机上的端口
+#（最后一步-MacOS/Windows操作系统）只能用-p选项将容器上的端口(例如50923)暴露给主机上的端口
 docker run --rm -it -e WEB_PORT=50923 -p 50923:50923 gpt-academic
 ```
 P.S. 如果需要依赖Latex的插件功能，请见Wiki。另外，您也可以直接使用docker-compose获取Latex功能（修改docker-compose.yml，保留方案4并删除其他方案）。
 
-2. ChatGPT + ChatGLM + MOSS（需要熟悉Docker）
+2. ChatGPT + ChatGLM2 + MOSS（需要熟悉Docker）
+[![chatglm](https://github.com/binary-husky/gpt_academic/actions/workflows/build-with-chatglm.yml/badge.svg?branch=master)](https://github.com/binary-husky/gpt_academic/actions/workflows/build-with-chatglm.yml)
 
 ``` sh
 # 修改docker-compose.yml，保留方案2并删除其他方案。修改docker-compose.yml中方案2的配置，参考其中注释即可
@@ -164,6 +170,8 @@ docker-compose up
 ```
 
 3. ChatGPT + LLAMA + 盘古 + RWKV（需要熟悉Docker）
+[![jittorllms](https://github.com/binary-husky/gpt_academic/actions/workflows/build-with-jittorllms.yml/badge.svg?branch=master)](https://github.com/binary-husky/gpt_academic/actions/workflows/build-with-jittorllms.yml)
+
 ``` sh
 # 修改docker-compose.yml，保留方案3并删除其他方案。修改docker-compose.yml中方案3的配置，参考其中注释即可
 docker-compose up
@@ -282,6 +290,9 @@ Tip：不指定文件直接点击 `载入对话历史存档` 可以查看历史h
 
 ### II：版本:
 - version 3.5(Todo): 使用自然语言调用本项目的所有函数插件（高优先级）
+- version 3.46: 支持完全脱手操作的实时语音对话
+- version 3.45: 支持自定义ChatGLM2微调模型
+- version 3.44: 正式支持Azure，优化界面易用性
 - version 3.4: +arxiv论文翻译、latex论文批改功能
 - version 3.3: +互联网信息综合功能
 - version 3.2: 函数插件支持更多参数接口 (保存对话功能, 解读任意语言代码+同时询问任意的LLM组合)
@@ -302,13 +313,18 @@ gpt_academic开发者QQ群-2：610599535
     - 某些浏览器翻译插件干扰此软件前端的运行
     - 官方Gradio目前有很多兼容性Bug，请务必使用`requirement.txt`安装Gradio
 
-### III：参考与学习
+### III：主题
+可以通过修改`THEME`选项（config.py）变更主题
+1. `Chuanhu-Small-and-Beautiful` [网址](https://github.com/GaiZhenbiao/ChuanhuChatGPT/)
+
+
+### IV：参考与学习
 
 ```
 代码中参考了很多其他优秀项目中的设计，顺序不分先后：
 
-# 清华ChatGLM-6B:
-https://github.com/THUDM/ChatGLM-6B
+# 清华ChatGLM2-6B:
+https://github.com/THUDM/ChatGLM2-6B
 
 # 清华JittorLLMs:
 https://github.com/Jittor/JittorLLMs
