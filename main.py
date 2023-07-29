@@ -5,7 +5,7 @@ from .toolbox import format_io, find_free_port, on_file_uploaded, on_report_gene
 
 def main():
     import gradio as gr
-    if gr.__version__ not in ['3.28.3','3.32.2']: assert False, "需要特殊依赖，请务必用 pip install -r requirements.txt 指令安装依赖，详情信息见requirements.txt"
+    if gr.__version__ not in ['3.28.3','3.32.2','3.36.1']: assert False, "需要特殊依赖，请务必用 pip install -r requirements.txt 指令安装依赖，详情信息见requirements.txt"
     from request_llm.bridge_all import predict
     from toolbox import format_io, find_free_port, on_file_uploaded, on_report_generated, get_conf, ArgsGeneralWrapper, load_chat_cookies, DummyWith
     # 建议您复制一个config_private.py放自己的秘密, 如API和代理网址, 避免不小心传github被别人看到
@@ -62,8 +62,8 @@ def main():
         gr.Markdown("### 科研专用GPT，学术优化助力科研效率的提升")
         cookies = gr.State(load_chat_cookies())
         with gr_L1():
-            with gr_L2(scale=2):
-                chatbot = gr.Chatbot(label=f"当前模型：{LLM_MODEL}", elem_id="academic_chatbot")
+            with gr_L2(scale=2, elem_id=""):
+                chatbot = gr.Chatbot(label=f"当前模型：{LLM_MODEL}", elem_id="chuanhu_chatbot")
                 if LAYOUT == "TOP-DOWN":  chatbot.style(height=CHATBOT_HEIGHT)
                 history = gr.State([])
             with gr_L2(scale=1, elem_id="gpt-panel"):
@@ -205,8 +205,8 @@ def main():
             # 为每一位访问的用户赋予一个独一无二的uuid编码
             cookies.update({'uuid': uuid.uuid4()})
             return cookies
-        demo.load(init_cookie, inputs=[cookies, chatbot], outputs=[cookies])
-        demo.load(lambda: 0, inputs=None, outputs=None, _js='()=>{ChatBotHeight();}')
+        academic.load(init_cookie, inputs=[cookies, chatbot], outputs=[cookies])
+        academic.load(lambda: 0, inputs=None, outputs=None, _js='()=>{ChatBotHeight();}')
         
     # gradio的inbrowser触发不太稳定，回滚代码到原始的浏览器打开函数
     def auto_opentab_delay():

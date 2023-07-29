@@ -1,4 +1,4 @@
-./docs/gradio-3.32.2-py3-none-any.whl
+gradio==3.36.1
 pydantic==1.10.11
 tiktoken>=0.3.3
 requests[socks]

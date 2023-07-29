@@ -1,6 +1,8 @@
+import os
 import gradio as gr
 from toolbox import get_conf
 CODE_HIGHLIGHT, ADD_WAIFU, LAYOUT = get_conf('CODE_HIGHLIGHT', 'ADD_WAIFU', 'LAYOUT')
+current_path = os.path.dirname(os.path.abspath(__file__))
 
 def adjust_theme():
 
@@ -60,7 +62,7 @@ def adjust_theme():
         if LAYOUT=="TOP-DOWN": 
             js = ""
         else:
-            with open('themes/common.js', 'r', encoding='utf8') as f: 
+            with open(current_path + '/common.js', 'r', encoding='utf8') as f: 
                 js = f"<script>{f.read()}</script>"
             
         # 添加一个萌萌的看板娘
@@ -82,5 +84,6 @@ def adjust_theme():
         print('gradio版本较旧, 不能自定义字体和颜色')
     return set_theme
 
-with open("themes/default.css", "r", encoding="utf-8") as f:
+
+with open(current_path+"/default.css", "r", encoding="utf-8") as f:
     advanced_css = f.read()
