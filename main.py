@@ -65,6 +65,7 @@ def main():
             with gr_L2(scale=2, elem_id=""):
                 chatbot = gr.Chatbot(label=f"当前模型：{LLM_MODEL}", elem_id="chuanhu_chatbot")
                 if LAYOUT == "TOP-DOWN":  chatbot.style(height=CHATBOT_HEIGHT)
+                else: chatbot.style(height=CHATBOT_HEIGHT)
                 history = gr.State([])
             with gr_L2(scale=1, elem_id="gpt-panel"):
                 with gr.Accordion("输入区", open=True, elem_id="input-panel") as area_input_primary:
