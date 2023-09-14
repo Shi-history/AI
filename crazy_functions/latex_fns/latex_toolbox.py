@@ -256,6 +256,7 @@ def find_main_tex_file(file_manifest, mode):
             canidates_score.append(0)
             with open(texf, 'r', encoding='utf8', errors='ignore') as f:
                 file_content = f.read()
+                file_content = rm_comments(file_content)
             for uw in unexpected_words:
                 if uw in file_content:
                     canidates_score[-1] -= 1
@@ -281,9 +282,12 @@ def rm_comments(main_file):
 def find_tex_file_ignore_case(fp):
     dir_name = os.path.dirname(fp)
     base_name = os.path.basename(fp)
+    # 如果输入的文件路径是正确的
+    if os.path.exists(pj(dir_name, base_name)): return pj(dir_name, base_name)
+    # 如果不正确，试着加上.tex后缀试试
     if not base_name.endswith('.tex'): base_name+='.tex'
     if os.path.exists(pj(dir_name, base_name)): return pj(dir_name, base_name)
-    # go case in-sensitive
+    # 如果还找不到，解除大小写限制，再试一次
     import glob
     for f in glob.glob(dir_name+'/*.tex'):
         base_name_s = os.path.basename(fp)
@@ -420,7 +424,7 @@ def compile_latex_with_timeout(command, cwd, timeout=60):
 
 def merge_pdfs(pdf1_path, pdf2_path, output_path):
     import PyPDF2
-    Percent = 0.8
+    Percent = 0.95
     # Open the first PDF file
     with open(pdf1_path, 'rb') as pdf1_file:
         pdf1_reader = PyPDF2.PdfFileReader(pdf1_file)

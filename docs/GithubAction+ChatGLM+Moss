@@ -1,7 +1,6 @@
 
 # 从NVIDIA源，从而支持显卡运损（检查宿主的nvidia-smi中的cuda版本必须>=11.3）
 FROM nvidia/cuda:11.3.1-runtime-ubuntu20.04
-ARG useProxyNetwork=''
 RUN apt-get update
 RUN apt-get install -y curl proxychains curl gcc
 RUN apt-get install -y git python python3 python-dev python3-dev --fix-missing

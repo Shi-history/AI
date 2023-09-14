@@ -33,9 +33,11 @@ import functools
 import re
 import pickle
 import time
+from toolbox import get_conf
 
-CACHE_FOLDER = "gpt_log"
-blacklist = ['multi-language', 'gpt_log', '.git', 'private_upload', 'multi_language.py', 'build', '.github', '.vscode', '__pycache__', 'venv']
+CACHE_FOLDER, = get_conf('PATH_LOGGING')
+
+blacklist = ['multi-language', CACHE_FOLDER, '.git', 'private_upload', 'multi_language.py', 'build', '.github', '.vscode', '__pycache__', 'venv']
 
 # LANG = "TraditionalChinese"
 # TransPrompt = f"Replace each json value `#` with translated results in Traditional Chinese, e.g., \"原始文本\":\"翻譯後文字\". Keep Json format. Do not answer #."
@@ -478,6 +480,8 @@ def step_2_core_key_translate():
     up = trans_json(need_translate, language=LANG, special=False)
     map_to_json(up, language=LANG)
     cached_translation = read_map_from_json(language=LANG)
+    LANG_STD = 'std'
+    cached_translation.update(read_map_from_json(language=LANG_STD))
     cached_translation = dict(sorted(cached_translation.items(), key=lambda x: -len(x[0])))
 
     # ===============================================

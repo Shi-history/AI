@@ -107,3 +107,5 @@ def adjust_theme():
 
 with open(current_path+"/green.css", "r", encoding="utf-8") as f:
     advanced_css = f.read()
+with open("themes/common.css", "r", encoding="utf-8") as f:
+    advanced_css += f.read()
