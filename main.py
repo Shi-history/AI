@@ -303,7 +303,7 @@ def main():
         auth=AUTHENTICATION if len(AUTHENTICATION) != 0 else None,
         blocked_paths=["config.py","config_private.py","docker-compose.yml","Dockerfile"])
     """
-    return academic
+    return demo
 
     # 如果需要在二级路径下运行
     # CUSTOM_PATH, = get_conf('CUSTOM_PATH')
