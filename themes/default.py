@@ -2,7 +2,9 @@ import os
 import gradio as gr
 from toolbox import get_conf
 CODE_HIGHLIGHT, ADD_WAIFU, LAYOUT = get_conf('CODE_HIGHLIGHT', 'ADD_WAIFU', 'LAYOUT')
+
 current_path = os.path.dirname(os.path.abspath(__file__))
+theme_dir = os.path.dirname(__file__)
 
 def adjust_theme():
 
@@ -59,11 +61,8 @@ def adjust_theme():
             button_cancel_text_color_dark="white",
         )
 
-        if LAYOUT=="TOP-DOWN": 
-            js = ""
-        else:
-            with open(current_path + '/common.js', 'r', encoding='utf8') as f: 
-                js = f"<script>{f.read()}</script>"
+        with open(os.path.join(theme_dir, 'common.js'), 'r', encoding='utf8') as f: 
+            js = f"<script>{f.read()}</script>"
             
         # 添加一个萌萌的看板娘
         if ADD_WAIFU:
@@ -84,8 +83,7 @@ def adjust_theme():
         print('gradio版本较旧, 不能自定义字体和颜色')
     return set_theme
 
-
-with open(current_path+"/default.css", "r", encoding="utf-8") as f:
+with open(os.path.join(theme_dir, 'default.css'), "r", encoding="utf-8") as f:
     advanced_css = f.read()
-with open(current_path+"/common.css", "r", encoding="utf-8") as f:
+with open(os.path.join(theme_dir, 'common.css'), "r", encoding="utf-8") as f:
     advanced_css += f.read()

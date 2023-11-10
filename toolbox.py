@@ -9,6 +9,7 @@ import os
 import gradio
 import shutil
 import glob
+import math
 from latex2mathml.converter import convert as tex2mathml
 from functools import wraps, lru_cache
 pj = os.path.join
@@ -153,7 +154,7 @@ def CatchException(f):
         except Exception as e:
             from check_proxy import check_proxy
             from toolbox import get_conf
-            proxies, = get_conf('proxies')
+            proxies = get_conf('proxies')
             tb_str = '```\n' + trimmed_format_exc() + '```'
             if len(chatbot_with_cookie) == 0:
                 chatbot_with_cookie.clear()
@@ -374,6 +375,26 @@ def markdown_convertion(txt):
                 contain_any_eq = True
         return contain_any_eq
 
+    def fix_markdown_indent(txt):
+        # fix markdown indent
+        if (' - ' not in txt) or ('. ' not in txt): 
+            return txt # do not need to fix, fast escape
+        # walk through the lines and fix non-standard indentation
+        lines = txt.split("\n")
+        pattern = re.compile(r'^\s+-')
+        activated = False
+        for i, line in enumerate(lines):
+            if line.startswith('- ') or line.startswith('1. '):
+                activated = True
+            if activated and pattern.match(line):
+                stripped_string = line.lstrip()
+                num_spaces = len(line) - len(stripped_string)
+                if (num_spaces % 4) == 3:
+                    num_spaces_should_be = math.ceil(num_spaces/4) * 4
+                    lines[i] = ' ' * num_spaces_should_be + stripped_string
+        return '\n'.join(lines)
+
+    txt = fix_markdown_indent(txt)
     if is_equation(txt):  # 有$标识的公式符号，且没有代码段```的标识
         # convert everything to html format
         split = markdown.markdown(text='---')
@@ -525,7 +546,7 @@ def promote_file_to_downloadzone(file, rename_file=None, chatbot=None):
     # 把文件复制过去
     if not os.path.exists(new_path): shutil.copyfile(file, new_path)
     # 将文件添加到chatbot cookie中，避免多用户干扰
-    if chatbot:
+    if chatbot is not None:
         if 'files_to_promote' in chatbot._cookies: current = chatbot._cookies['files_to_promote']
         else: current = []
         chatbot._cookies.update({'files_to_promote': [new_path] + current})
@@ -536,14 +557,14 @@ def disable_auto_promotion(chatbot):
     return
 
 def is_the_upload_folder(string):
-    PATH_PRIVATE_UPLOAD, = get_conf('PATH_PRIVATE_UPLOAD')
+    PATH_PRIVATE_UPLOAD = get_conf('PATH_PRIVATE_UPLOAD')
     pattern = r'^PATH_PRIVATE_UPLOAD/[A-Za-z0-9_-]+/\d{4}-\d{2}-\d{2}-\d{2}-\d{2}-\d{2}$'
     pattern = pattern.replace('PATH_PRIVATE_UPLOAD', PATH_PRIVATE_UPLOAD)
     if re.match(pattern, string): return True
     else: return False
 
 def del_outdated_uploads(outdate_time_seconds):
-    PATH_PRIVATE_UPLOAD, = get_conf('PATH_PRIVATE_UPLOAD')
+    PATH_PRIVATE_UPLOAD = get_conf('PATH_PRIVATE_UPLOAD')
     current_time = time.time()
     one_hour_ago = current_time - outdate_time_seconds
     # Get a list of all subdirectories in the PATH_PRIVATE_UPLOAD folder
@@ -569,7 +590,7 @@ def on_file_uploaded(request: gradio.Request, files, chatbot, txt, txt2, checkbo
     # 创建工作路径
     user_name = "default" if not request.username else request.username
     time_tag = gen_time_str()
-    PATH_PRIVATE_UPLOAD, = get_conf('PATH_PRIVATE_UPLOAD')
+    PATH_PRIVATE_UPLOAD = get_conf('PATH_PRIVATE_UPLOAD')
     target_path_base = pj(PATH_PRIVATE_UPLOAD, user_name, time_tag)
     os.makedirs(target_path_base, exist_ok=True)
 
@@ -583,7 +604,7 @@ def on_file_uploaded(request: gradio.Request, files, chatbot, txt, txt2, checkbo
     
     # 整理文件集合
     moved_files = [fp for fp in glob.glob(f'{target_path_base}/**/*', recursive=True)]
-    if "底部输入区" in checkboxes: 
+    if "浮动输入区" in checkboxes: 
         txt, txt2 = "", target_path_base
     else:
         txt, txt2 = target_path_base, ""
@@ -607,7 +628,7 @@ def on_file_uploaded(request: gradio.Request, files, chatbot, txt, txt2, checkbo
 
 def on_report_generated(cookies, files, chatbot):
     from toolbox import find_recent_files
-    PATH_LOGGING, = get_conf('PATH_LOGGING')
+    PATH_LOGGING = get_conf('PATH_LOGGING')
     if 'files_to_promote' in cookies:
         report_files = cookies['files_to_promote']
         cookies.pop('files_to_promote')
@@ -623,13 +644,34 @@ def on_report_generated(cookies, files, chatbot):
 
 def load_chat_cookies():
     API_KEY, LLM_MODEL, AZURE_API_KEY = get_conf('API_KEY', 'LLM_MODEL', 'AZURE_API_KEY')
+    AZURE_CFG_ARRAY, NUM_CUSTOM_BASIC_BTN = get_conf('AZURE_CFG_ARRAY', 'NUM_CUSTOM_BASIC_BTN')
+
+    # deal with azure openai key
     if is_any_api_key(AZURE_API_KEY):
         if is_any_api_key(API_KEY): API_KEY = API_KEY + ',' + AZURE_API_KEY
         else: API_KEY = AZURE_API_KEY
-    return {'api_key': API_KEY, 'llm_model': LLM_MODEL}
+    if len(AZURE_CFG_ARRAY) > 0:
+        for azure_model_name, azure_cfg_dict in AZURE_CFG_ARRAY.items():
+            if not azure_model_name.startswith('azure'): 
+                raise ValueError("AZURE_CFG_ARRAY中配置的模型必须以azure开头")
+            AZURE_API_KEY_ = azure_cfg_dict["AZURE_API_KEY"]
+            if is_any_api_key(AZURE_API_KEY_):
+                if is_any_api_key(API_KEY): API_KEY = API_KEY + ',' + AZURE_API_KEY_
+                else: API_KEY = AZURE_API_KEY_
+
+    customize_fn_overwrite_ = {}
+    for k in range(NUM_CUSTOM_BASIC_BTN):
+        customize_fn_overwrite_.update({  
+            "自定义按钮" + str(k+1):{
+                "Title":    r"",
+                "Prefix":   r"请在自定义菜单中定义提示词前缀.",
+                "Suffix":   r"请在自定义菜单中定义提示词后缀",
+            }
+        })
+    return {'api_key': API_KEY, 'llm_model': LLM_MODEL, 'customize_fn_overwrite': customize_fn_overwrite_}
 
 def is_openai_api_key(key):
-    CUSTOM_API_KEY_PATTERN, = get_conf('CUSTOM_API_KEY_PATTERN')
+    CUSTOM_API_KEY_PATTERN = get_conf('CUSTOM_API_KEY_PATTERN')
     if len(CUSTOM_API_KEY_PATTERN) != 0:
         API_MATCH_ORIGINAL = re.match(CUSTOM_API_KEY_PATTERN, key)
     else:
@@ -789,6 +831,7 @@ def get_conf(*args):
     for arg in args:
         r = read_single_conf_with_lru_cache(arg)
         res.append(r)
+    if len(res) == 1: return res[0]
     return res
 
 
@@ -860,7 +903,7 @@ def clip_history(inputs, history, tokenizer, max_token_limit):
     直到历史记录的标记数量降低到阈值以下。
     """
     import numpy as np
-    from request_llm.bridge_all import model_info
+    from request_llms.bridge_all import model_info
     def get_token_num(txt): 
         return len(tokenizer.encode(txt, disallowed_special=()))
     input_token_num = get_token_num(inputs)
@@ -950,7 +993,7 @@ def gen_time_str():
     return time.strftime("%Y-%m-%d-%H-%M-%S", time.localtime())
 
 def get_log_folder(user='default', plugin_name='shared'):
-    PATH_LOGGING, = get_conf('PATH_LOGGING')
+    PATH_LOGGING = get_conf('PATH_LOGGING')
     _dir = pj(PATH_LOGGING, user, plugin_name)
     if not os.path.exists(_dir): os.makedirs(_dir)
     return _dir
@@ -967,13 +1010,13 @@ class ProxyNetworkActivate():
         else:
             # 给定了task, 我们检查一下
             from toolbox import get_conf
-            WHEN_TO_USE_PROXY, = get_conf('WHEN_TO_USE_PROXY')
+            WHEN_TO_USE_PROXY = get_conf('WHEN_TO_USE_PROXY')
             self.valid = (task in WHEN_TO_USE_PROXY)
 
     def __enter__(self):
         if not self.valid: return self
         from toolbox import get_conf
-        proxies, = get_conf('proxies')
+        proxies = get_conf('proxies')
         if 'no_proxy' in os.environ: os.environ.pop('no_proxy')
         if proxies is not None:
             if 'http' in proxies: os.environ['HTTP_PROXY'] = proxies['http']
@@ -1015,7 +1058,7 @@ def Singleton(cls):
 """
 ========================================================================
 第四部分
-接驳虚空终端:
+接驳void-terminal:
     - set_conf:                     在运行过程中动态地修改配置
     - set_multi_conf:               在运行过程中动态地修改多个配置
     - get_plugin_handle:            获取插件的句柄
@@ -1030,7 +1073,7 @@ def set_conf(key, value):
     read_single_conf_with_lru_cache.cache_clear()
     get_conf.cache_clear()
     os.environ[key] = str(value)
-    altered, = get_conf(key)
+    altered = get_conf(key)
     return altered
 
 def set_multi_conf(dic):
@@ -1051,7 +1094,7 @@ def get_plugin_handle(plugin_name):
 def get_chat_handle():
     """
     """
-    from request_llm.bridge_all import predict_no_ui_long_connection
+    from request_llms.bridge_all import predict_no_ui_long_connection
     return predict_no_ui_long_connection
 
 def get_plugin_default_kwargs():

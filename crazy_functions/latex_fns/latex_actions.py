@@ -165,7 +165,7 @@ class LatexPaperFileGroup():
         self.sp_file_tag = []
 
         # count_token
-        from request_llm.bridge_all import model_info
+        from request_llms.bridge_all import model_info
         enc = model_info["gpt-3.5-turbo"]['tokenizer']
         def get_token_num(txt): return len(enc.encode(txt, disallowed_special=()))
         self.get_token_num = get_token_num
@@ -423,7 +423,7 @@ def write_html(sp_file_contents, sp_file_result, chatbot, project_folder):
     # write html
     try:
         import shutil
-        from ..crazy_utils import construct_html
+        from crazy_functions.pdf_fns.report_gen_html import construct_html
         from toolbox import gen_time_str
         ch = construct_html() 
         orig = ""
