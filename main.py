@@ -1,6 +1,6 @@
 import os; os.environ['no_proxy'] = '*' # 避免代理网络产生意外污染
 import gradio as gr
-from .request_llm.bridge_chatgpt import predict
+from .request_llms.bridge_chatgpt import predict
 from .toolbox import format_io, find_free_port, on_file_uploaded, on_report_generated, get_conf, ArgsGeneralWrapper, DummyWith
 import pickle
 import codecs
@@ -8,7 +8,7 @@ import base64
 
 def main():
     import gradio as gr
-    if gr.__version__ not in ['3.32.6']: 
+    if gr.__version__ not in ['3.32.6', '3.36.1']: 
         raise ModuleNotFoundError("使用项目内置Gradio获取最优体验! 请运行 `pip install -r requirements.txt` 指令安装内置Gradio及其他依赖, 详情信息见requirements.txt.")
     from request_llms.bridge_all import predict
     from toolbox import format_io, find_free_port, on_file_uploaded, on_report_generated, get_conf, ArgsGeneralWrapper, load_chat_cookies, DummyWith
@@ -81,7 +81,7 @@ def main():
     predefined_btns = {}
     with gr.Blocks(title="GPT 学术优化", theme=set_theme, analytics_enabled=False, css=advanced_css) as demo: #academic
         #gr.HTML(title_html)
-        gr.Markdown("### 科研专用GPT，学术优化助力科研效率的提升")
+        #gr.Markdown("### 科研专用GPT，学术优化助力科研效率的提升")
         secret_css, dark_mode, persistent_cookie = gr.Textbox(visible=False), gr.Textbox(DARK_MODE, visible=False), gr.Textbox(visible=False)
         cookies = gr.State(load_chat_cookies())
         with gr_L1():
@@ -434,7 +434,7 @@ def main():
         threading.Thread(target=warm_up_mods, name="warm-up", daemon=True).start()      # 预热tiktoken模块
 
     run_delayed_tasks()
-    """
+    #"""
     demo.queue(concurrency_count=CONCURRENT_COUNT).launch(
         quiet=True,
         server_name="0.0.0.0", 
@@ -445,8 +445,8 @@ def main():
         favicon_path=os.path.join(os.path.dirname(__file__), "docs/logo.png"), 
         auth=AUTHENTICATION if len(AUTHENTICATION) != 0 else None,
         blocked_paths=["config.py","config_private.py","docker-compose.yml","Dockerfile",f"{PATH_LOGGING}/admin"])
-    """
-    return demo
+    #"""
+    #return demo
 
     # 如果需要在二级路径下运行
     # CUSTOM_PATH = get_conf('CUSTOM_PATH')
